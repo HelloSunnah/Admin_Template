@@ -1,11 +1,6 @@
 <template>
-  <aside :class="{ 'w-64': isOpen, 'w-20': !isOpen }" class="bg-[rgb(27,57,78)] text-white h-full transition-all duration-300 relative z-10" ref="sidebar">
-    <div class="flex items-center justify-center p-4">
-      <button @click="toggleSidebar" class="text-white focus:outline-none">
-        <img src="@/assets/img/ati-logo.png" alt="Admin Panel" class="h-18 w-full" />
-      </button>
-    </div>
-
+  <div :class="['sidebar', theme]">
+ 
     <nav class="flex flex-col space-y-4 px-1 pt-12 flex-grow">
       <div v-for="item in menuItems" :key="item.id" class="flex flex-col relative">
         <!-- Menu Button -->
@@ -41,70 +36,31 @@
         </div>
       </div>
     </nav>
-  </aside>
+  </div>
 </template>
-<script>
-import { reactive } from 'vue';
-import { useRoute } from 'vue-router';
 
+<script>
 export default {
-  name: 'Sidebar',
-  props: {
-    isOpen: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  data() {
-    return {
-      dropdownOpen: reactive({}),
-      menuItems: [
-        {
-          id: 'dashboard',
-          label: 'Dashboard',
-          icon: 'fas fa-tachometer-alt',
-          route: '/dashboard',
-        },
-        {
-          id: 'report',
-          label: 'Report',
-          icon: 'fas fa-file-alt',
-          subItems: [
-            { id: 'due-report', label: 'Due Report', route: '/dashboard', icon: 'fas fa-calendar-day' },
-            { id: 'paid-report', label: 'Paid Report', route: '/dashboard', icon: 'fas fa-calendar-check' },
-          ],
-        },
-      ],
-    };
-  },
-  created() {
-    this.menuItems.forEach(item => {
-      this.dropdownOpen[item.id] = false;
-    });
-  },
-  methods: {
-    toggleSidebar() {
-      this.$emit('toggle');
-    },
-    toggleDropdown(itemId) {
-      this.dropdownOpen[itemId] = !this.dropdownOpen[itemId];
-    },
-    handleItemClick(item) {
-      if (item.subItems && item.subItems.length) {
-        this.toggleDropdown(item.id);
-      } else {
-        this.$router.push(item.route);
-      }
-    },
-    handleSubItemClick(subItem) {
-      this.$router.push(subItem.route);
-    },
-  },
-  setup() {
-    const route = useRoute();
-    return {
-      currentRoute: route.path,
-    };
-  },
+  props: ['theme'] // Accept the theme prop from App.vue
 };
 </script>
+
+<style scoped>
+.sidebar {
+  width: 200px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: background-color 0.3s;
+}
+.sidebar.pink {
+  background-color: pink; /* Sidebar turns pink */
+}
+.sidebar.blue {
+  background-color: blue; /* Sidebar turns blue */
+}
+.sidebar.gray {
+  background-color: gray; /* Sidebar turns gray */
+}
+</style>

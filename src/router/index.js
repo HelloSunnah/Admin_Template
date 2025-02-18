@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useToast } from "vue-toastification";
 import Dashboard from "@/views/Dashboard.vue";
+import About from "@/views/About.vue";
 
 import Login from "@/components/Authentication/Login.vue";
 
@@ -30,6 +31,11 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
+    meta: { requiresAuth: true },
+  }, {
+    path: "/about",
+    name: "About",
+    component: About,
     meta: { requiresAuth: true },
   },
  
