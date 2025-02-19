@@ -1,0 +1,15 @@
+{
+  "dashboard": "ড্যাশবোর্ড",
+  "sidebar": {
+    "home": "হোম",
+    "settings": "সেটিংস"
+  },
+  "navbar": {
+    "Blue": "নীল ",
+    "Pink": "গোলাপী ",
+    "Gray": "ধূসর ",
+
+    "language": "ভাষা",
+    "my_life_my_rules": "আমার জীবন, আমার নিয়ম"
+  }
+}

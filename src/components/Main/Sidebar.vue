@@ -5,6 +5,7 @@
       <button @click="toggleSidebar" class="text-white focus:outline-none">
         <img src="@/assets/img/ati-logo.png" alt="Admin Panel" class="h-18 w-full" />
       </button>
+
     </div>
 
     <!-- Sidebar Menu -->

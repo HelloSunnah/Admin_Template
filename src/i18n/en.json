@@ -1,0 +1,16 @@
+{
+    "dashboard": "Dashboard",
+    "sidebar": {
+      "home": "Home",
+      "settings": "Settings"
+    },
+    "navbar": {
+      "language": "Language",
+      "Blue": "Blue",
+      "Pink": "Pink",
+      "Gray": "Gray",
+      "my_life_my_rules": "my_life_my_rules"
+
+    }
+  }
+  

@@ -1,56 +1,21 @@
 <template>
   <div class="flex h-screen">
-    <Sidebar v-if="!isAuthPage" :isOpen="isSidebarOpen" :theme="theme" />
+    <!-- Sidebar on left or right based on sidebarPosition -->
+    <Sidebar v-if="!isAuthPage" :isOpen="isSidebarOpen" :theme="theme" :position="sidebarPosition" />
+
     <div class="flex-1 flex flex-col">
-      <Navbar 
-        :theme="theme" 
-        @change-theme="updateTheme" 
-        v-if="!isAuthPage" 
-        @toggleSidebar="toggleSidebar" 
-      />
-      <main 
-        :class="['content', dashboardBackground, { 'ml-56': isSidebarOpen, 'ml-0': !isSidebarOpen }]" 
-        class="flex-1 overflow-y-auto p-4 transition-all duration-300"
-      >
+      <!-- Pass the toggle event from Navbar -->
+      <Navbar :theme="theme" @change-theme="updateTheme" v-if="!isAuthPage" @toggleSidebar="toggleSidebar" @toggle-sidebar-position="toggleSidebarPosition" />
+
+      <main :class="['content', dashboardBackground, { 'ml-56': isSidebarOpen && sidebarPosition === 'left', 'mr-56': isSidebarOpen && sidebarPosition === 'right', 'ml-0': !isSidebarOpen }]"
+        class="flex-1 overflow-y-auto p-4 transition-all duration-300">
         <router-view />
       </main>
+
       <Footer v-if="!isAuthPage" />
     </div>
   </div>
 </template>
-
-
-<style scoped>
-/* Default Content Styling */
-.content {
-  padding: 20px;
-  transition: margin-left 0.3s ease-in-out;
-}
-
-/* Sidebar Open - Content Shift */
-.ml-56 {
-  margin-left: 224px; /* Adjust this to match sidebar width */
-}
-
-/* Sidebar Closed - Full Width */
-.ml-0 {
-  margin-left: 0;
-}
-
-/* Different dashboard background colors for each theme */
-.content.yellow {
-  background-color: yellow;
-}
-
-.content.lightblue {
-  background-color: lightblue;
-}
-
-.content.lightgray {
-  background-color: lightgray;
-}
-</style>
-
 
 <script>
 import Navbar from './components/Main/Navbar.vue';
@@ -66,8 +31,9 @@ export default {
   data() {
     return {
       theme: localStorage.getItem('theme') || 'pink', // Default theme for sidebar and navbar
-      dashboardBackground: localStorage.getItem('dashboardBackground') || 'yellow', // Default color for the dashboard;
+      dashboardBackground: localStorage.getItem('dashboardBackground') || 'yellow', // Default color for the dashboard
       isSidebarOpen: true,
+      sidebarPosition: localStorage.getItem('sidebarPosition') || 'left', // Sidebar position (left or right)
     };
   },
   computed: {
@@ -96,7 +62,47 @@ export default {
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen; // Toggle sidebar visibility
     },
+    toggleSidebarPosition() {
+      // Toggle between left and right sidebar positions
+      this.sidebarPosition = this.sidebarPosition === 'left' ? 'right' : 'left';
+      localStorage.setItem('sidebarPosition', this.sidebarPosition); // Store the sidebar position in localStorage
+    },
   },
 };
 </script>
+<style scoped>
+/* Default Content Styling */
+.content {
+  padding: 20px;
+  transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
+}
 
+/* Sidebar Open - Content Shift */
+.ml-56 {
+  margin-left: 224px; /* Adjust this to match sidebar width */
+}
+
+/* Sidebar Open - Content Shift (Right Sidebar) */
+.mr-56 {
+  margin-right: 224px; /* Adjust this to match sidebar width */
+}
+
+/* Sidebar Closed - Full Width */
+.ml-0 {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Different dashboard background colors for each theme */
+.content.yellow {
+  background-color: rgb(177, 177, 170);
+}
+
+.content.lightblue {
+  background-color: lightblue;
+}
+
+.content.lightgray {
+  background-color: lightgray;
+}
+</style>
