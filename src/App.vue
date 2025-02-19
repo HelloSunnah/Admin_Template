@@ -1,14 +1,34 @@
 <template>
   <div class="flex h-screen">
-    <!-- Sidebar on left or right based on sidebarPosition -->
+    <!-- Sidebar: Positioned Left or Right based on sidebarPosition -->
     <Sidebar v-if="!isAuthPage" :isOpen="isSidebarOpen" :theme="theme" :position="sidebarPosition" />
 
     <div class="flex-1 flex flex-col">
-      <!-- Pass the toggle event from Navbar -->
-      <Navbar :theme="theme" @change-theme="updateTheme" v-if="!isAuthPage" @toggleSidebar="toggleSidebar" @toggle-sidebar-position="toggleSidebarPosition" />
+      <!-- Navbar with theme and sidebar toggle buttons -->
+      <Navbar 
+        :theme="theme" 
+        @change-theme="updateTheme" 
+        v-if="!isAuthPage" 
+        @toggleSidebar="toggleSidebar"
+        @toggle-sidebar-position="toggleSidebarPosition" 
+      />
 
-      <main :class="['content', dashboardBackground, { 'ml-56': isSidebarOpen && sidebarPosition === 'left', 'mr-56': isSidebarOpen && sidebarPosition === 'right', 'ml-0': !isSidebarOpen }]"
-        class="flex-1 overflow-y-auto p-4 transition-all duration-300">
+      <!-- Main Content Area -->
+      <main
+        :class="[
+          'content', 
+          dashboardBackground, 
+          sidebarClasses, 
+          'flex-1', 
+          'overflow-y-auto', 
+          'p-4', 
+          'transition-all', 
+          'duration-300',
+          'mt-navbar',
+          'sm:ml-0',    
+          'sm:mr-0'     
+        ]"
+      >
         <router-view />
       </main>
 
@@ -30,46 +50,58 @@ export default {
   },
   data() {
     return {
-      theme: localStorage.getItem('theme') || 'pink', // Default theme for sidebar and navbar
-      dashboardBackground: localStorage.getItem('dashboardBackground') || 'yellow', // Default color for the dashboard
+      theme: this.getLocalStorage('theme', 'light'), // Default theme for sidebar and navbar
+      dashboardBackground: this.getLocalStorage('dashboardBackground', 'yellow'), // Default color for the dashboard
       isSidebarOpen: true,
-      sidebarPosition: localStorage.getItem('sidebarPosition') || 'left', // Sidebar position (left or right)
+      sidebarPosition: this.getLocalStorage('sidebarPosition', 'left'), // Sidebar position (left or right)
     };
   },
   computed: {
     isAuthPage() {
       // Check if the current route is login or registration
-      return this.$route.name === 'Login' || this.$route.name === 'Registration';
+      return ['Login', 'Registration'].includes(this.$route.name);
+    },
+    sidebarClasses() {
+      return {
+        'ml-56': this.isSidebarOpen && this.sidebarPosition === 'left', // Apply left margin if sidebar is left
+        'mr-56': this.isSidebarOpen && this.sidebarPosition === 'right', // Apply right margin if sidebar is right
+        'ml-0': !this.isSidebarOpen, // No margin if sidebar is closed
+        'mr-0': !this.isSidebarOpen, // No margin if sidebar is closed
+      };
     },
   },
   methods: {
+    getLocalStorage(key, defaultValue) {
+      return localStorage.getItem(key) || defaultValue;
+    },
+    setLocalStorage(key, value) {
+      localStorage.setItem(key, value);
+    },
     updateTheme(color) {
-      this.theme = color; // Update the theme for sidebar and navbar
-      localStorage.setItem('theme', color); // Store it in localStorage
+      this.theme = color;
+      this.setLocalStorage('theme', color); // Store the theme in localStorage
       this.updateDashboardColor(color); // Change the dashboard background color based on the selected theme
     },
     updateDashboardColor(color) {
-      // Change the dashboard background color based on the selected theme
-      if (color === 'pink') {
-        this.dashboardBackground = 'yellow'; // Pink theme → Yellow dashboard
-      } else if (color === 'blue') {
-        this.dashboardBackground = 'lightblue'; // Blue theme → Light blue dashboard
-      } else if (color === 'gray') {
-        this.dashboardBackground = 'lightgray'; // Gray theme → Light gray dashboard
-      }
-      localStorage.setItem('dashboardBackground', this.dashboardBackground); // Save dashboard color to localStorage
+      const backgroundColors = {
+        light: 'yellow',
+        blue: 'lightblue',
+        gray: 'lightgray',
+      };
+      this.dashboardBackground = backgroundColors[color] || 'yellow';
+      this.setLocalStorage('dashboardBackground', this.dashboardBackground); // Save dashboard color to localStorage
     },
     toggleSidebar() {
-      this.isSidebarOpen = !this.isSidebarOpen; // Toggle sidebar visibility
+      this.isSidebarOpen = !this.isSidebarOpen;
     },
     toggleSidebarPosition() {
-      // Toggle between left and right sidebar positions
       this.sidebarPosition = this.sidebarPosition === 'left' ? 'right' : 'left';
-      localStorage.setItem('sidebarPosition', this.sidebarPosition); // Store the sidebar position in localStorage
+      this.setLocalStorage('sidebarPosition', this.sidebarPosition); // Store the sidebar position in localStorage
     },
   },
 };
 </script>
+
 <style scoped>
 /* Default Content Styling */
 .content {
@@ -77,9 +109,11 @@ export default {
   transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
 }
 
-/* Sidebar Open - Content Shift */
+/* Adjust navbar margin to prevent overlap */
+
+/* Sidebar Open - Content Shift (Left Sidebar) */
 .ml-56 {
-  margin-left: 224px; /* Adjust this to match sidebar width */
+  margin-left: 280px; /* Adjust this to match sidebar width */
 }
 
 /* Sidebar Open - Content Shift (Right Sidebar) */
@@ -90,6 +124,9 @@ export default {
 /* Sidebar Closed - Full Width */
 .ml-0 {
   margin-left: 0;
+}
+
+.mr-0 {
   margin-right: 0;
 }
 
@@ -104,5 +141,13 @@ export default {
 
 .content.lightgray {
   background-color: lightgray;
+}
+
+/* Tailwind Responsiveness */
+@media (max-width: 640px) {
+  .ml-56, .mr-56 {
+    margin-left: 0;  /* No margin when on small screens */
+    margin-right: 0;
+  }
 }
 </style>

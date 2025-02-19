@@ -9,6 +9,7 @@ import en from './i18n/en.json';
 import bn from './i18n/bn.json';
 import fr from './i18n/fr.json';
 import sv from './i18n/sv.json';
+import '@fortawesome/fontawesome-free/css/all.css'; // Import Font Awesome CSS
 
 const app = createApp(App);
 const i18n = createI18n({

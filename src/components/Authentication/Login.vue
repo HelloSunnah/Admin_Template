@@ -95,7 +95,7 @@ img {
 }
 
 /* Form Enhancements */
-.bg-white {
+.bg-light {
   background: linear-gradient(to top right, #ffffff, #f9f9f9);
 }
 .shadow-2xl {

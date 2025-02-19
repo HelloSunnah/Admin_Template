@@ -1,12 +1,12 @@
 {
-    "dashboard": "ড্যাশবোর্ড",
+    "dashboard": "ড্যাবোর্ড",
     "sidebar": {
       "home": "হোম",
       "settings": "সেটিংস"
     },
     "navbar": {
       "Blue": "Bleu ",
-      "Pink": "Rose ",
+      "light": "Rose ",
       "Gray": "Gris ",
   
       "language": "ভাষা",

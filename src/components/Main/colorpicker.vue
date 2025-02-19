@@ -1,6 +1,6 @@
 <template>
   <div class="color-picker">
-    <button @click="setTheme('pink')" class="pink">Pink</button>
+    <button @click="setTheme('light')" class="white">Light</button>
     <button @click="setTheme('blue')" class="blue">Blue</button>
     <button @click="setTheme('gray')" class="gray">Gray</button>
   </div>
@@ -23,8 +23,8 @@ export default {
   border: none;
   cursor: pointer;
 }
-.pink {
-  background-color: pink;
+.light {
+  background-color: white;
 }
 .blue {
   background-color: blue;
