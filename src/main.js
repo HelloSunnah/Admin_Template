@@ -21,6 +21,7 @@ const options = {
 // Use Toastification with the app instance
 
 app.use(router);
+
 app.use(Toast, options);
 
 // Finally, mount the app

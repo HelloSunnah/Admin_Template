@@ -1,19 +1,18 @@
 <template>
-  <div class="dashboard">
-    <h1>Dashboard</h1>
-    <p>Welcome to the dashboard!</p>
+  <div class="page">
+    <h2>Dashboard</h2>
+    <p>Welcome to the admin panel dashboard!</p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Dashboard'
-};
+}
 </script>
 
 <style scoped>
-.dashboard {
+.page {
   padding: 20px;
-  transition: background-color 0.3s ease;
 }
 </style>

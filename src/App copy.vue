@@ -3,7 +3,7 @@
     <Sidebar v-if="!isAuthPage" :isOpen="isSidebarOpen" :theme="theme" />
     <div class="flex-1 flex flex-col">
       <Navbar :theme="theme" @change-theme="updateTheme" v-if="!isAuthPage" @toggleSidebar="toggleSidebar" />
-      <main :class="['content', dashboardBackground]" class="flex-1 overflow-y-auto p-4">
+      <main  :class="['content', dashboardBackground]" class="flex-1 overflow-y-auto p-4">
         <router-view />
       </main>
       <Footer v-if="!isAuthPage" />
@@ -26,7 +26,7 @@ export default {
     return {
       theme: localStorage.getItem('theme') || 'pink', // Default theme for sidebar and navbar
       dashboardBackground: localStorage.getItem('dashboardBackground') || 'yellow', // Default color for the dashboard;
-      isSidebarOpen: true,
+      isSidebarOpen: true, // Default state for the sidebar
     };
   },
   computed: {
@@ -68,17 +68,12 @@ export default {
 
 /* Different dashboard background colors for each theme */
 .content.yellow {
-  background-color: yellow;
-  /* Yellow for pink theme */
+  background-color: yellow; /* Yellow for pink theme */
 }
-
 .content.lightblue {
-  background-color: lightblue;
-  /* Light blue for blue theme */
+  background-color: lightblue; /* Light blue for blue theme */
 }
-
 .content.lightgray {
-  background-color: lightgray;
-  /* Light gray for gray theme */
+  background-color: lightgray; /* Light gray for gray theme */
 }
 </style>
