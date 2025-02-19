@@ -2,14 +2,55 @@
   <div class="flex h-screen">
     <Sidebar v-if="!isAuthPage" :isOpen="isSidebarOpen" :theme="theme" />
     <div class="flex-1 flex flex-col">
-      <Navbar :theme="theme" @change-theme="updateTheme" v-if="!isAuthPage" @toggleSidebar="toggleSidebar" />
-      <main :class="['content', dashboardBackground]" class="flex-1 overflow-y-auto p-4">
+      <Navbar 
+        :theme="theme" 
+        @change-theme="updateTheme" 
+        v-if="!isAuthPage" 
+        @toggleSidebar="toggleSidebar" 
+      />
+      <main 
+        :class="['content', dashboardBackground, { 'ml-56': isSidebarOpen, 'ml-0': !isSidebarOpen }]" 
+        class="flex-1 overflow-y-auto p-4 transition-all duration-300"
+      >
         <router-view />
       </main>
       <Footer v-if="!isAuthPage" />
     </div>
   </div>
 </template>
+
+
+<style scoped>
+/* Default Content Styling */
+.content {
+  padding: 20px;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* Sidebar Open - Content Shift */
+.ml-56 {
+  margin-left: 224px; /* Adjust this to match sidebar width */
+}
+
+/* Sidebar Closed - Full Width */
+.ml-0 {
+  margin-left: 0;
+}
+
+/* Different dashboard background colors for each theme */
+.content.yellow {
+  background-color: yellow;
+}
+
+.content.lightblue {
+  background-color: lightblue;
+}
+
+.content.lightgray {
+  background-color: lightgray;
+}
+</style>
+
 
 <script>
 import Navbar from './components/Main/Navbar.vue';
@@ -59,26 +100,3 @@ export default {
 };
 </script>
 
-
-<style scoped>
-.content {
-  margin-left: 200px;
-  padding: 20px;
-}
-
-/* Different dashboard background colors for each theme */
-.content.yellow {
-  background-color: yellow;
-  /* Yellow for pink theme */
-}
-
-.content.lightblue {
-  background-color: lightblue;
-  /* Light blue for blue theme */
-}
-
-.content.lightgray {
-  background-color: lightgray;
-  /* Light gray for gray theme */
-}
-</style>
